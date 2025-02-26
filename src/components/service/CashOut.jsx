@@ -11,7 +11,7 @@ const CashOut = () => {
         const id = toast.loading("loading...")
 
         try {
-            const res = await fetch("http://localhost:5000/api/v1/action/cash-out", {
+            const res = await fetch("https://revenger-server.vercel.app/api/v1/action/cash-out", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -26,7 +26,7 @@ const CashOut = () => {
             if (result.success) {
                 toast.success(result.message, { id })
                 navigate("/")
-            
+
                 reset()
 
             }

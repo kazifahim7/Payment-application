@@ -4,7 +4,7 @@ const CashRequest = () => {
     const [requests, setRequest] = useState([]);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/api/v1/request/myRequest`, {
+        fetch(`https://revenger-server.vercel.app/api/v1/request/myRequest`, {
             method: "GET",
             headers: {
                 Authorization: `${localStorage.getItem('token')}`,

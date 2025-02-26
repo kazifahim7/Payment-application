@@ -4,16 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const SendMoney = () => {
-    const { register,reset, handleSubmit, formState: { errors } } = useForm();
-    const navigate=useNavigate()
+    const { register, reset, handleSubmit, formState: { errors } } = useForm();
+    const navigate = useNavigate()
 
-    const onSubmit = async(data) => {
-       
-        data.amount=Number(data.amount)
+    const onSubmit = async (data) => {
+
+        data.amount = Number(data.amount)
         const id = toast.loading("loading...")
 
         try {
-            const res = await fetch("http://localhost:5000/api/v1/action/send-money", {
+            const res = await fetch("https://revenger-server.vercel.app/api/v1/action/send-money", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -23,14 +23,14 @@ const SendMoney = () => {
 
             })
             const result = await res.json()
-    
+
 
             if (result.success) {
                 toast.success(result.message, { id })
                 navigate("/")
-               
+
                 reset()
-        
+
             }
             else {
                 toast.success(result.message, { id })

@@ -10,11 +10,11 @@ const CashRequestAgent = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const [success, setSuccess] = useState(false)
 
-  
+
 
 
     useEffect(() => {
-        fetch(`http://localhost:5000/api/v1/request/request`, {
+        fetch(`https://revenger-server.vercel.app/api/v1/request/request`, {
             method: "GET",
             headers: {
                 Authorization: `${localStorage.getItem('token')}`,
@@ -46,7 +46,7 @@ const CashRequestAgent = () => {
         const id = toast.loading("loading...")
 
         try {
-            const res = await fetch("http://localhost:5000/api/v1/action/cash-in", {
+            const res = await fetch("https://revenger-server.vercel.app/api/v1/action/cash-in", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

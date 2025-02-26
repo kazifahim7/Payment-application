@@ -4,7 +4,7 @@ const AllHistory = () => {
     const [transaction, setTransaction] = useState([]);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/api/v1/action/my-tran`, {
+        fetch(`https://revenger-server.vercel.app/api/v1/action/my-tran`, {
             method: "GET",
             headers: {
                 Authorization: `${localStorage.getItem('token')}`,

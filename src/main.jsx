@@ -31,7 +31,7 @@ const router = createBrowserRouter([
     element: <MainLayout></MainLayout>,
     errorElement: <NotFound></NotFound>,
     children: [{
-      path: "/",
+      index:true,
       element: <PrivatePage><Home></Home></PrivatePage>
     },
     
@@ -55,7 +55,7 @@ const router = createBrowserRouter([
     element: <Login></Login>
   },
   {
-    path: "register",
+    path: "/register",
     element: <RegisterForm></RegisterForm>
   }, 
   

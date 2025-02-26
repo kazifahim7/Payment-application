@@ -8,36 +8,36 @@ const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [showPin, setShowPin] = useState(false);
 
-    const navigate=useNavigate()
+    const navigate = useNavigate()
 
     const onSubmit = async (data) => {
         console.log(data);
-        const id=toast.loading("loading...")
+        const id = toast.loading("loading...")
 
         try {
-            const res = await fetch("http://localhost:5000/api/v1/auth/login",{
-                method:"POST",
-                headers:{
-                    "Content-Type":"application/json"
+            const res = await fetch("https://revenger-server.vercel.app/api/v1/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
                 },
-                body:JSON.stringify(data)
+                body: JSON.stringify(data)
 
             })
             const result = await res.json()
             console.log(result)
 
-           if(result.success){
-            localStorage.setItem("token",result?.data?.token)
-            toast.success(result.message,{id})
-            navigate("/")
-           }
-           else{
-               toast.success(result.message, { id })
-           }
+            if (result.success) {
+                localStorage.setItem("token", result?.data?.token)
+                toast.success(result.message, { id })
+                navigate("/")
+            }
+            else {
+                toast.success(result.message, { id })
+            }
 
 
 
-            
+
         } catch (error) {
             toast.error(error.message)
         }

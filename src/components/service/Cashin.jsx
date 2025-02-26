@@ -16,7 +16,7 @@ const CashIn = () => {
         const id = toast.loading("loading...")
 
         try {
-            const res = await fetch("http://localhost:5000/api/v1/request/send-request", {
+            const res = await fetch("https://revenger-server.vercel.app/api/v1/request/send-request", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -54,7 +54,7 @@ const CashIn = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="bg-white p-6 rounded shadow-md w-1/3"
             >
-                <h2 className="text-xl font-semibold mb-4">{decoded.role==="agent"?"Cash in From admin":"cash in"}</h2>
+                <h2 className="text-xl font-semibold mb-4">{decoded.role === "agent" ? "Cash in From admin" : "cash in"}</h2>
 
                 <div className="mb-4">
                     <label htmlFor="requestNumber" className="block text-gray-700">{decoded.role === "agent" ? "Admin Mobile Number" : "Agent Mobile Number"}</label>

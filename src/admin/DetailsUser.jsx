@@ -4,10 +4,10 @@ import { useParams } from "react-router-dom";
 
 const DetailsUser = () => {
     const { id } = useParams()
-    const [data,setData]=useState([])
+    const [data, setData] = useState([])
 
     useEffect(() => {
-        fetch(`http://localhost:5000/api/v1/action/all-tran/${id}`, {
+        fetch(`https://revenger-server.vercel.app/api/v1/action/all-tran/${id}`, {
             method: "GET",
             headers: {
                 Authorization: `${localStorage.getItem('token')}`

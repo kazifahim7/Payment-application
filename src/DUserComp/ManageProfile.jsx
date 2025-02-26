@@ -10,7 +10,7 @@ const ManageProfile = () => {
     const decoded = jwtDecode(token);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/api/v1/auth/user/${decoded?.id}`, {
+        fetch(`https://revenger-server.vercel.app/api/v1/auth/user/${decoded?.id}`, {
             method: "GET",
             headers: {
                 Authorization: `${localStorage.getItem('token')}`
@@ -22,7 +22,7 @@ const ManageProfile = () => {
 
     return (
         <div className="container mx-auto p-6">
-           
+
             <div className="bg-white shadow-lg rounded-lg p-6 max-w-md mx-auto">
                 <h2 className="text-2xl font-semibold mb-4 text-gray-700 text-center">Profile Information</h2>
                 <div className="space-y-4">
