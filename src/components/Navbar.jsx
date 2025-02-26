@@ -64,7 +64,9 @@ const Navbar = () => {
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
                     >
 
-                       <li><Link to={"/dashboard/payment-history"}>Dashboard</Link></li>
+                       
+
+                        {decoded.role !== "admin" ? <li><Link to={"/dashboard/payment-history"}>Dashboard</Link></li> : <li><Link to={"/dashBoard/manageUser"}>Dashboard</Link></li>}
                       
 
                        

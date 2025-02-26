@@ -21,6 +21,9 @@ import AllHistory from './DUserComp/AllHistory';
 import ManageProfile from './DUserComp/ManageProfile';
 import CashRequest from './DUserComp/CashRequest';
 import CashRequestAgent from './agent/CashIn';
+import ManageUser from './admin/ManageUser';
+import DetailsUser from './admin/DetailsUser';
+import AdminPrivatePage from './Private/AdminPrivate';
 
 const router = createBrowserRouter([
   {
@@ -31,10 +34,7 @@ const router = createBrowserRouter([
       path: "/",
       element: <PrivatePage><Home></Home></PrivatePage>
     },
-    {
-      path: "register",
-      element: <RegisterForm></RegisterForm>
-    },
+    
     {
       path: "send-money",
       element: <SendMoney></SendMoney>
@@ -53,7 +53,13 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login></Login>
-  }, {
+  },
+  {
+    path: "register",
+    element: <RegisterForm></RegisterForm>
+  }, 
+  
+  {
     path: "/dashboard",
     element: <PrivatePage><MainDashBoard></MainDashBoard></PrivatePage>,
     children: [
@@ -75,6 +81,16 @@ const router = createBrowserRouter([
       {
         path: "cash-request-agent",
         element: <CashRequestAgent></CashRequestAgent>
+
+      },
+      {
+        path: "manageUser",
+        element: <AdminPrivatePage><ManageUser></ManageUser></AdminPrivatePage>
+
+      },
+      {
+        path: "detailsUser/:id",
+        element: <AdminPrivatePage><DetailsUser></DetailsUser></AdminPrivatePage>
 
       },
       

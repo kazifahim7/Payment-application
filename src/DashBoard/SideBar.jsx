@@ -102,41 +102,21 @@ const Sidebar = () => {
                                         <span className='mx-4 font-medium'>Manage User</span>
                                     </NavLink>
 
-
-                                    <NavLink
-                                        to='/dashBoard/create-product'
-                                        className={({ isActive }) =>
-                                            `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${isActive ? 'bg-gray-300  text-gray-700' : 'text-white'
-                                            }`
-                                        }
-                                    >
-                                        <BsFillHouseAddFill className='w-5 h-5 text-orange-500' />
-
-                                        <span className='mx-4 font-medium'>Create Product</span>
-                                    </NavLink>
-                                    <NavLink
-                                        to='/dashBoard/all-products'
-                                        className={({ isActive }) =>
-                                            `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${isActive ? 'bg-gray-300  text-gray-700' : 'text-white'
-                                            }`
-                                        }
-                                    >
-
-                                        <MdOutlineProductionQuantityLimits className='w-5 h-5 text-orange-500' />
-                                        <span className='mx-4 font-medium'>Created Product</span>
-                                    </NavLink>
-                                    <NavLink
-                                        to='/dashBoard/all-orders'
-                                        className={({ isActive }) =>
-                                            `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${isActive ? 'bg-gray-300  text-gray-700' : 'text-white'
-                                            }`
-                                        }
-                                    >
-                                        <FaCartFlatbedSuitcase className='w-5 h-5 text-orange-500' />
-                                        <span className='mx-4 font-medium'>All Orders</span>
-                                    </NavLink>
-
                                 </>
+                            }
+
+                            {
+                                isPosition === "admin" && <NavLink
+                                    to='/dashBoard/cash-request-agent'
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${isActive ? 'bg-gray-300  text-gray-700' : 'text-white'
+                                        }`
+                                    }
+                                >
+
+                                    <FaCartFlatbedSuitcase className='w-5 h-5 text-orange-500' />
+                                    <span className='mx-4 font-medium'>Cash Request</span>
+                                </NavLink>
                             }
 
 
@@ -160,7 +140,7 @@ const Sidebar = () => {
                                         }
                                     >
                                         <FaCartFlatbedSuitcase className='w-5 h-5 text-orange-500' />
-                                        <span className='mx-4 font-medium'>Payment History</span>
+                                        <span className='mx-4 font-medium'>MY Payment </span>
                                     </NavLink>
 
                             <NavLink

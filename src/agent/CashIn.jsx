@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
+
 const CashRequestAgent = () => {
     const [requests, setRequest] = useState([]);
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedRequest, setSelectedRequest] = useState(null);
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
-    const [success,setSuccess]=useState(false)
+    const [success, setSuccess] = useState(false)
+
+  
+
 
     useEffect(() => {
         fetch(`http://localhost:5000/api/v1/request/request`, {
@@ -31,12 +35,12 @@ const CashRequestAgent = () => {
         reset();
     };
 
-    const onSubmit = async(data) => {
-     
+    const onSubmit = async (data) => {
+
         const modifiedData = {
             RMobileNumber: selectedRequest?.customerNumber,
             amount: Number(selectedRequest?.amount),
-            pin:data?.pin
+            pin: data?.pin
         }
         console.log(modifiedData)
         const id = toast.loading("loading...")
@@ -76,12 +80,14 @@ const CashRequestAgent = () => {
 
 
         // Handle the cash-in transaction here
-        
+
     };
 
     return (
         <div className="container mx-auto p-6">
-            <h1 className="text-2xl font-bold mb-6">Cash Requests</h1>
+            <div>
+                <h1 className="text-2xl font-bold mb-6">Cash Requests</h1>
+            </div>
             <div className="overflow-x-auto shadow-md rounded-lg border border-gray-200">
                 <table className="min-w-full bg-white">
                     {/* Head */}
@@ -104,7 +110,7 @@ const CashRequestAgent = () => {
                                     </td>
                                     <td className="py-3 px-4 border-b border-gray-200">
                                         <button
-                                        disabled={request.complete}
+                                            disabled={request.complete}
                                             className="btn text-blue-600 hover:underline"
                                             onClick={() => handleCashInClick(request)}
                                         >

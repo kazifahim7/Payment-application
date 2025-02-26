@@ -2,10 +2,14 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { jwtDecode } from "jwt-decode";
 
 const CashIn = () => {
     const { register, reset, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate()
+    const token = localStorage.getItem("token");
+
+    const decoded = jwtDecode(token);
 
     const onSubmit = async (data) => {
         data.amount = Number(data.amount)
@@ -50,10 +54,10 @@ const CashIn = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="bg-white p-6 rounded shadow-md w-1/3"
             >
-                <h2 className="text-xl font-semibold mb-4">Cash In</h2>
+                <h2 className="text-xl font-semibold mb-4">{decoded.role==="agent"?"Cash in From admin":"cash in"}</h2>
 
                 <div className="mb-4">
-                    <label htmlFor="requestNumber" className="block text-gray-700">Agent Mobile Number</label>
+                    <label htmlFor="requestNumber" className="block text-gray-700">{decoded.role === "agent" ? "Admin Mobile Number" : "Agent Mobile Number"}</label>
                     <input
                         type="text"
                         id="requestNumber"
