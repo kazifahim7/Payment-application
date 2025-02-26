@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-
 const DetailsUser = () => {
-    const { id } = useParams()
-    const [data, setData] = useState([])
+    const { id } = useParams();
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true); // Loading state added
 
     useEffect(() => {
+        setLoading(true); // Start loading before fetch
         fetch(`https://revenger-server.vercel.app/api/v1/action/all-tran/${id}`, {
             method: "GET",
             headers: {
@@ -16,12 +17,24 @@ const DetailsUser = () => {
             .then(res => res.json())
             .then(data => {
                 setData(data?.data);
+            })
+            .catch(() => {
+                setData([]); // Handle errors gracefully
+            })
+            .finally(() => {
+                setLoading(false); // Stop loading after fetch
             });
     }, [id]);
+
     return (
-        <div>
-            <div className="container mx-auto p-6">
-                <h1 className="text-2xl font-bold mb-4 text-center">Transaction History</h1>
+        <div className="container mx-auto p-6">
+            <h1 className="text-2xl font-bold mb-4 text-center">Transaction History</h1>
+
+            {loading ? (
+                <div className="flex justify-center items-center h-40">
+                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+                </div>
+            ) : (
                 <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-200">
                     <table className="min-w-full bg-white">
                         {/* Head */}
@@ -59,7 +72,7 @@ const DetailsUser = () => {
                         </tbody>
                     </table>
                 </div>
-            </div>
+            )}
         </div>
     );
 };

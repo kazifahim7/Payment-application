@@ -2,27 +2,33 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-
 const CashRequestAgent = () => {
     const [requests, setRequest] = useState([]);
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedRequest, setSelectedRequest] = useState(null);
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
-    const [success, setSuccess] = useState(false)
-
-
-
+    const [success, setSuccess] = useState(false);
+    const [loading, setLoading] = useState(false); // Loading state added
 
     useEffect(() => {
-        fetch(`https://revenger-server.vercel.app/api/v1/request/request`, {
-            method: "GET",
-            headers: {
-                Authorization: `${localStorage.getItem('token')}`,
-            },
-        })
-            .then(res => res.json())
-            .then(data => setRequest(data?.data))
-            .catch(err => console.error("Error fetching requests:", err));
+        const fetchRequests = async () => {
+            setLoading(true); // Start loading before fetch
+            try {
+                const res = await fetch(`https://revenger-server.vercel.app/api/v1/request/request`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `${localStorage.getItem('token')}`,
+                    },
+                });
+                const data = await res.json();
+                setRequest(data?.data);
+            } catch (err) {
+                console.error("Error fetching requests:", err);
+            } finally {
+                setLoading(false); // Stop loading after fetch
+            }
+        };
+        fetchRequests();
     }, [success]);
 
     const handleCashInClick = (request) => {
@@ -36,14 +42,14 @@ const CashRequestAgent = () => {
     };
 
     const onSubmit = async (data) => {
-
         const modifiedData = {
             RMobileNumber: selectedRequest?.customerNumber,
             amount: Number(selectedRequest?.amount),
             pin: data?.pin
-        }
-        console.log(modifiedData)
-        const id = toast.loading("loading...")
+        };
+        console.log(modifiedData);
+        const id = toast.loading("loading...");
+        setLoading(true); // Start loading for cash-in
 
         try {
             const res = await fetch("https://revenger-server.vercel.app/api/v1/action/cash-in", {
@@ -53,34 +59,22 @@ const CashRequestAgent = () => {
                     Authorization: `${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(modifiedData)
-
-            })
-            const result = await res.json()
-
+            });
+            const result = await res.json();
 
             if (result.success) {
-                toast.success(result.message, { id })
+                toast.success(result.message, { id });
                 handleCloseModal();
-                setSuccess(true)
-
-                reset()
-
+                setSuccess(true);
+                reset();
+            } else {
+                toast.success(result.message, { id });
             }
-            else {
-                toast.success(result.message, { id })
-            }
-
-
-
-
         } catch (error) {
-            toast.error(error.message)
+            toast.error(error.message);
+        } finally {
+            setLoading(false); // Stop loading after cash-in
         }
-
-
-
-        // Handle the cash-in transaction here
-
     };
 
     return (
@@ -88,45 +82,51 @@ const CashRequestAgent = () => {
             <div>
                 <h1 className="text-2xl font-bold mb-6">Cash Requests</h1>
             </div>
-            <div className="overflow-x-auto shadow-md rounded-lg border border-gray-200">
-                <table className="min-w-full bg-white">
-                    {/* Head */}
-                    <thead className="bg-gray-100">
-                        <tr>
-                            <th className="py-3 px-4 text-left text-gray-600">Customer Number</th>
-                            <th className="py-3 px-4 text-left text-gray-600">Amount</th>
-                            <th className="py-3 px-4 text-left text-gray-600">Status</th>
-                            <th className="py-3 px-4 text-left text-gray-600">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {requests.length > 0 ? (
-                            requests.map((request) => (
-                                <tr key={request._id} className="hover:bg-gray-50">
-                                    <td className="py-3 px-4 border-b border-gray-200">{request.customerNumber}</td>
-                                    <td className="py-3 px-4 border-b border-gray-200">{request.amount} Taka</td>
-                                    <td className={`py-3 px-4 border-b border-gray-200 ${request.complete ? 'text-green-600' : 'text-yellow-600'}`}>
-                                        {request.complete ? "Success" : "Pending"}
-                                    </td>
-                                    <td className="py-3 px-4 border-b border-gray-200">
-                                        <button
-                                            disabled={request.complete}
-                                            className="btn text-blue-600 hover:underline"
-                                            onClick={() => handleCashInClick(request)}
-                                        >
-                                            Cash In
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
+            {loading ? (
+                <div className="flex justify-center items-center h-40">
+                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+                </div>
+            ) : (
+                <div className="overflow-x-auto shadow-md rounded-lg border border-gray-200">
+                    <table className="min-w-full bg-white">
+                        {/* Head */}
+                        <thead className="bg-gray-100">
                             <tr>
-                                <td colSpan="4" className="py-3 px-4 text-center text-gray-500">No cash requests found.</td>
+                                <th className="py-3 px-4 text-left text-gray-600">Customer Number</th>
+                                <th className="py-3 px-4 text-left text-gray-600">Amount</th>
+                                <th className="py-3 px-4 text-left text-gray-600">Status</th>
+                                <th className="py-3 px-4 text-left text-gray-600">Action</th>
                             </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            {requests.length > 0 ? (
+                                requests.map((request) => (
+                                    <tr key={request._id} className="hover:bg-gray-50">
+                                        <td className="py-3 px-4 border-b border-gray-200">{request.customerNumber}</td>
+                                        <td className="py-3 px-4 border-b border-gray-200">{request.amount} Taka</td>
+                                        <td className={`py-3 px-4 border-b border-gray-200 ${request.complete ? 'text-green-600' : 'text-yellow-600'}`}>
+                                            {request.complete ? "Success" : "Pending"}
+                                        </td>
+                                        <td className="py-3 px-4 border-b border-gray-200">
+                                            <button
+                                                disabled={request.complete}
+                                                className="btn text-blue-600 hover:underline"
+                                                onClick={() => handleCashInClick(request)}
+                                            >
+                                                Cash In
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="4" className="py-3 px-4 text-center text-gray-500">No cash requests found.</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            )}
 
             {/* Modal */}
             {isModalOpen && (
